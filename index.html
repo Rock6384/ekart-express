@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ई-कार्ट एक्सप्रेस | E-Kart Express</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    body { background: #f1f5f9; color: #0f172a; padding-bottom: 50px; }
+    header { background: #1e3a8a; color: white; padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+    .brand { font-size: 20px; font-weight: bold; display: flex; align-items: center; gap: 8px; }
+    .admin-btn { background: #f97316; color: white; border: none; padding: 8px 14px; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 13px; }
+    .container { max-width: 650px; margin: 24px auto; padding: 0 16px; }
+    .card { background: white; border-radius: 12px; padding: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.06); margin-bottom: 20px; border: 1px solid #e2e8f0; }
+    .search-box { display: flex; gap: 8px; margin-top: 14px; }
+    .search-box input { flex: 1; padding: 12px 14px; border: 2px solid #cbd5e1; border-radius: 8px; font-size: 16px; font-weight: 600; outline: none; }
+    .search-box input:focus { border-color: #1e3a8a; }
+    .search-box button { background: #1e3a8a; color: white; border: none; padding: 0 22px; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 15px; }
+    .badge { display: inline-block; padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: bold; background: #e0f2fe; color: #0284c7; }
+    .info-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #f1f5f9; font-size: 14px; }
+    .info-row span:first-child { color: #64748b; }
+    .info-row span:last-child { font-weight: bold; text-align: right; }
+    .timeline { margin-top: 20px; border-left: 2px solid #cbd5e1; padding-left: 18px; margin-left: 8px; }
+    .event { position: relative; margin-bottom: 20px; }
+    .event::before { content: ''; position: absolute; left: -25px; top: 4px; width: 12px; height: 12px; border-radius: 50%; background: #16a34a; }
+    .event.active::before { background: #0284c7; box-shadow: 0 0 0 4px rgba(2,132,199,0.3); }
+    .event-title { font-weight: bold; font-size: 15px; }
+    .event-time { font-size: 12px; color: #64748b; margin-bottom: 3px; }
+    .event-desc { font-size: 13px; color: #334155; }
+    #resultCard { display: none; }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="brand">📦 ई-कार्ट एक्सप्रेस</div>
+    <button class="admin-btn" onclick="openAdmin()">⚙️ कंट्रोल पैनल</button>
+  </header>
+
+  <div class="container">
+    <div class="card">
+      <h2 style="font-size: 18px;">पार्सल ट्रैकिंग पोर्टल</h2>
+      <p style="font-size: 13px; color: #64748b; margin-top: 4px;">अपना 12-अंकों का कंसाइनमेंट / ट्रैकिंग नंबर दर्ज करें</p>
+      <div class="search-box">
+        <input type="text" id="trackInput" maxlength="12" placeholder="12 अंकों का नंबर दर्ज करें...">
+        <button onclick="trackOrder()">ट्रैक</button>
+      </div>
+    </div>
+
+    <!-- Shuru me ye card chhipa rahega (display: none) -->
+    <div class="card" id="resultCard">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+        <span style="font-size: 13px; color: #64748b;">Awb No: <b id="lblNum" style="color: #0f172a;"></b></span>
+        <span class="badge" id="lblStatus"></span>
+      </div>
+
+      <div class="info-row"><span>कहाँ से:</span><span>हैदराबाद सेंट्रल हब (तेलंगाना)</span></div>
+      <div class="info-row"><span>कहाँ तक:</span><span>मलेरकोटला (पंजाब)</span></div>
+      <div class="info-row"><span>प्राप्तकर्ता:</span><span id="lblRec"></span></div>
+      <div class="info-row"><span>डिलीवरी पता:</span><span id="lblAddr"></span></div>
+      <div class="info-row"><span>वर्तमान स्थिति:</span><span id="lblLoc" style="color: #0284c7;"></span></div>
+
+      <div class="timeline">
+        <div class="event">
+          <div class="event-time">Day 1, 08:30 PM</div>
+          <div class="event-title">हैदराबाद मेन हब (तेलंगाना)</div>
+          <div class="event-desc">पार्सल पिकअप व डिस्पैच पूर्ण हुआ</div>
+        </div>
+        <div class="event">
+          <div class="event-time">Day 2, 02:15 PM</div>
+          <div class="event-title">नागपुर ट्रांसशिपमेंट हb (महाराष्ट्र)</div>
+          <div class="event-desc">ट्रांजिट हब पर स्कैन व सॉर्टिंग पूर्ण</div>
+        </div>
+        <div class="event">
+          <div class="event-time">Day 3, 06:00 AM</div>
+          <div class="event-title">भोपाल - ग्वालियर कॉरिडोर (मध्य प्रदेश)</div>
+          <div class="event-desc">पार्सल उत्तर भारत रूट के लिए रवाना</div>
+        </div>
+        <div class="event">
+          <div class="event-time">Day 3, 08:30 PM</div>
+          <div class="event-title">दिल्ली NCR गेटवे हब (सोनीपत)</div>
+          <div class="event-desc">पंजाब रूट वाहन में लोड किया गया</div>
+        </div>
+        <div class="event">
+          <div class="event-time">Day 4, 06:15 AM</div>
+          <div class="event-title">लुधियाना - संगरूर हब (पंजाब)</div>
+          <div class="event-desc">रीजनल डिस्ट्रीब्यूशन सेंटर पर आगमन</div>
+        </div>
+        <div class="event active">
+          <div class="event-time">आज, 11:45 AM</div>
+          <div class="event-title">मलेरकोटला लोकल स्टेशन (गांव हब, पंजाब)</div>
+          <div class="event-desc">पार्सल Shipped हो चुका है, स्थानीय डिलीवरी केंद्र पर है</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function getStoredData() {
+      const data = localStorage.getItem('ekart_info');
+      if (data) return JSON.parse(data);
+      return {
+        number: "872845845236",
+        status: "SHIPPED / IN TRANSIT",
+        rec: "इरफ़ान खान / साजिद",
+        addr: "गांव जमालपुरा, अमरगढ़, मलेरकोटला",
+        loc: "मलेरकोटला रूरल स्टेशन (Shipped)"
+      };
+    }
+
+    function trackOrder() {
+      const val = document.getElementById('trackInput').value.trim();
+      const d = getStoredData();
+
+      if (!val) {
+        alert("कृपया 12-अंकों का ट्रैकिंग नंबर दर्ज करें!");
+        return;
+      }
+
+      if (val === d.number) {
+        document.getElementById('lblNum').innerText = d.number;
+        document.getElementById('lblStatus').innerText = d.status;
+        document.getElementById('lblRec').innerText = d.rec;
+        document.getElementById('lblAddr').innerText = d.addr;
+        document.getElementById('lblLoc').innerText = d.loc;
+        // Search match hone par hi card show hoga
+        document.getElementById('resultCard').style.display = 'block';
+      } else {
+        document.getElementById('resultCard').style.display = 'none';
+        alert("दर्ज किया गया ट्रैकिंग नंबर नहीं मिला! सही नंबर दर्ज करें।");
+      }
+    }
+
+    // Input box me Enter dabane par bhi track chalega
+    document.getElementById('trackInput').addEventListener('keypress', function (e) {
+      if (e.key === 'Enter') {
+        trackOrder();
+      }
+    });
+
+    function openAdmin() {
+      const pin = prompt("एडमिन पिन डालें (डिफ़ॉल्ट पिन: 1234):");
+      if (pin !== "1234") {
+        alert("गलत पिन!");
+        return;
+      }
+      const newStatus = prompt("नया स्टेटस लिखें (उदा. SHIPPED, PROCESSING, PENDING, COMPLETED):", "SHIPPED / IN TRANSIT");
+      if (newStatus) {
+        const d = getStoredData();
+        d.status = newStatus;
+        d.loc = "मलेरकोटला रूरल स्टेशन (" + newStatus + ")";
+        localStorage.setItem('ekart_info', JSON.stringify(d));
+        if (document.getElementById('resultCard').style.display === 'block') {
+          document.getElementById('lblStatus').innerText = d.status;
+          document.getElementById('lblLoc').innerText = d.loc;
+        }
+        alert("स्टेटस अपडेट हो गया!");
+      }
+    }
+  </script>
+</body>
+  </html>
