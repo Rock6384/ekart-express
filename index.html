@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>E-Kart Express | Courier & Logistics Services</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --brand-blue: #0b2545;
+      --brand-navy: #13315c;
+      --brand-yellow: #ffb703;
+      --brand-orange: #fb8500;
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --text: #0f172a;
+      --muted: #64748b;
+      --border: #e2e8f0;
+      --success: #15803d;
+      --info: #0284c7;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
+    body { background-color: var(--bg); color: var(--text); }
+
+    .top-strip {
+      background: #06182c;
+      color: #94a3b8;
+      font-size: 11px;
+      padding: 6px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    header {
+      background: var(--brand-blue);
+      color: white;
+      padding: 14px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.12);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .logo-wrap { display: flex; align-items: center; gap: 10px; cursor: pointer; user-select: none; }
+    .logo-badge {
+      background: var(--brand-yellow);
+      color: var(--brand-blue);
+      font-weight: 900;
+      font-size: 18px;
+      padding: 6px 10px;
+      border-radius: 6px;
+      letter-spacing: -1px;
+    }
+    .logo-text h1 { font-size: 18px; font-weight: 800; letter-spacing: -0.5px; }
+    .logo-text p { font-size: 10px; color: #cbd5e1; text-transform: uppercase; letter-spacing: 1px; }
+
+    .header-support {
+      font-size: 12px;
+      color: #cbd5e1;
+      font-weight: 600;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, var(--brand-blue) 0%, var(--brand-navy) 100%);
+      color: white;
+      padding: 34px 16px 60px;
+      text-align: center;
+    }
+    .hero-badge {
+      display: inline-block;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      margin-bottom: 12px;
+      color: var(--brand-yellow);
+    }
+    .hero h2 { font-size: 24px; font-weight: 800; margin-bottom: 8px; }
+    .hero p { font-size: 13px; color: #cbd5e1; max-width: 500px; margin: 0 auto; }
+
+    .search-wrapper { max-width: 680px; margin: -35px auto 30px; padding: 0 16px; position: relative; z-index: 10; }
+    .search-card {
+      background: white;
+      border-radius: 14px;
+      padding: 22px;
+      box-shadow: 0 12px 35px rgba(11, 37, 69, 0.12);
+      border: 1px solid var(--border);
+    }
+    .track-tabs { display: flex; gap: 10px; margin-bottom: 16px; border-bottom: 2px solid #f1f5f9; padding-bottom: 10px; }
+    .track-tab { font-size: 13px; font-weight: 700; color: var(--brand-blue); border-bottom: 2px solid var(--brand-orange); padding-bottom: 8px; }
+    .input-group { display: flex; gap: 8px; }
+    .input-group input {
+      flex: 1;
+      padding: 14px;
+      border: 2px solid #cbd5e1;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      outline: none;
+    }
+    .input-group input:focus { border-color: var(--brand-orange); }
+    .btn-track {
+      background: var(--brand-orange);
+      color: white;
+      border: none;
+      padding: 0 24px;
+      border-radius: 8px;
+      font-weight: 800;
+      font-size: 15px;
+      cursor: pointer;
+    }
+
+    .result-section { display: none; margin-top: 24px; }
+    .result-card {
+      background: white;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+      overflow: hidden;
+    }
+    .result-head {
+      background: #f8fafc;
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .awb-info { font-size: 12px; color: var(--muted); }
+    .awb-info b { font-size: 17px; color: var(--text); letter-spacing: 1px; }
+    .status-tag {
+      background: #e0f2fe;
+      color: #0369a1;
+      font-weight: 800;
+      font-size: 12px;
+      padding: 6px 14px;
+      border-radius: 30px;
+      border: 1px solid #bae6fd;
+    }
+
+    .transit-strip {
+      background: #fffbeb;
+      border-bottom: 1px solid #fef3c7;
+      padding: 14px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .transit-box div:first-child { font-size: 11px; text-transform: uppercase; color: #92400e; font-weight: 700; }
+    .transit-box div:last-child { font-size: 15px; font-weight: 800; color: var(--brand-blue); }
+
+    .meta-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 14px;
+      padding: 20px;
+      border-bottom: 1px solid var(--border);
+    }
+    .meta-item h4 { font-size: 11px; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
+    .meta-item p { font-size: 14px; font-weight: 700; color: #1e293b; }
+
+    .timeline-box { padding: 22px 20px; }
+    .timeline-head { font-size: 15px; font-weight: 800; color: var(--brand-blue); margin-bottom: 18px; }
+    .timeline { position: relative; padding-left: 24px; border-left: 2px solid #cbd5e1; margin-left: 10px; }
+    .node { position: relative; margin-bottom: 22px; }
+    .node:last-child { margin-bottom: 0; }
+    .node::before {
+      content: '';
+      position: absolute;
+      left: -31px;
+      top: 3px;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--success);
+    }
+    .node.active::before {
+      background: var(--brand-orange);
+      box-shadow: 0 0 0 4px rgba(251, 133, 0, 0.25);
+    }
+    .node-time { font-size: 11px; color: var(--muted); margin-bottom: 2px; }
+    .node-hub { font-size: 14px; font-weight: 800; color: var(--brand-blue); }
+    .node-desc { font-size: 13px; color: #475569; margin-top: 2px; }
+
+    .stats-bar {
+      max-width: 680px;
+      margin: 30px auto;
+      padding: 0 16px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      text-align: center;
+    }
+    .stat-card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+    }
+    .stat-card h3 { font-size: 18px; font-weight: 900; color: var(--brand-orange); }
+    .stat-card p { font-size: 11px; color: var(--muted); font-weight: 600; margin-top: 2px; }
+
+    .network-wrap {
+      max-width: 680px;
+      margin: 20px auto 40px;
+      padding: 0 16px;
+    }
+    .section-title { font-size: 17px; font-weight: 800; color: var(--brand-blue); margin-bottom: 6px; }
+    .section-sub { font-size: 12px; color: var(--muted); margin-bottom: 16px; }
+    .hub-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 12px;
+    }
+    .hub-card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+    }
+    .hub-tag { font-size: 10px; font-weight: 800; color: var(--brand-orange); text-transform: uppercase; }
+    .hub-city { font-size: 15px; font-weight: 800; color: var(--brand-blue); margin: 3px 0; }
+    .hub-desc { font-size: 11px; color: #64748b; line-height: 1.4; }
+
+    footer {
+      background: #06182c;
+      color: #94a3b8;
+      padding: 30px 16px;
+      text-align: center;
+      font-size: 12px;
+      border-top: 3px solid var(--brand-yellow);
+    }
+    footer p { margin-bottom: 6px; }
+    .footer-support { font-size: 13px; color: white; font-weight: 700; margin-top: 8px; }
+  </style>
+</head>
+<body>
+
+  <div class="top-strip">
+    <span>📞 24x7 Customer Helpline: 1800-419-8877</span>
+    <span>📍 National Express Network • ISO 9001:2015 Certified</span>
+  </div>
+
+  <header>
+    <div class="logo-wrap" id="brandSecretArea">
+      <div class="logo-badge">EKART</div>
+      <div class="logo-text">
+        <h1>E-Kart Express</h1>
+        <p>Express Courier & Logistics</p>
+      </div>
+    </div>
+    <div class="header-support">
+      <span>Express Tracking</span>
+    </div>
+  </header>
+
+  <div class="hero">
+    <div class="hero-badge">⚡ Fastest Domestic Courier & Freight Delivery</div>
+    <h2>Live Consignment Tracking Portal</h2>
+    <p>Track your shipment status, route transit hubs, and estimated delivery schedule.</p>
+  </div>
+
+  <div class="search-wrapper">
+    <div class="search-card">
+      <div class="track-tabs">
+        <div class="track-tab">Track by Consignment / AWB Number</div>
+      </div>
+      <div class="input-group">
+        <input type="text" id="trackInput" maxlength="12" placeholder="Enter 12-digit number (e.g. 872845845236)">
+        <button class="btn-track" onclick="trackOrder()">Track ➜</button>
+      </div>
+    </div>
+
+    <div class="result-section" id="resultCard">
+      <div class="result-card">
+        <div class="result-head">
+          <div class="awb-info">Consignment No: <b id="lblNum"></b></div>
+          <div class="status-tag" id="lblStatus"></div>
+        </div>
+
+        <div class="transit-strip">
+          <div class="transit-box">
+            <div>Origin</div>
+            <div>Hyderabad (Telangana)</div>
+          </div>
+          <div style="font-size: 18px; color: var(--brand-orange); font-weight: 900;">➔ ➔ ➔</div>
+          <div class="transit-box" style="text-align: right;">
+            <div>Destination</div>
+            <div>Malerkotla (Punjab)</div>
+          </div>
+        </div>
+
+        <div class="meta-grid">
+          <div class="meta-item">
+            <h4>Consignee Name</h4>
+            <p id="lblRec"></p>
+          </div>
+          <div class="meta-item">
+            <h4>Delivery Address</h4>
+            <p id="lblAddr"></p>
+          </div>
+          <div class="meta-item">
+            <h4>Current Status / Location</h4>
+            <p id="lblLoc" style="color: var(--info);"></p>
+          </div>
+          <div class="meta-item">
+            <h4>Estimated Delivery</h4>
+            <p style="color: var(--success);">Tomorrow by Evening (Express Service)</p>
+          </div>
+        </div>
+
+        <div class="timeline-box">
+          <div class="timeline-head">📍 Live Shipment Activity & Transit History</div>
+          <div class="timeline">
+            <div class="node">
+              <div class="node-time">02 Nov, 08:30 PM • Origin Hub</div>
+              <div class="node-hub">Hyderabad Central Logistics Gateway (Telangana)</div>
+              <div class="node-desc">Consignment picked up and security scanned. Dispatched in line-haul vehicle.</div>
+            </div>
+            <div class="node">
+              <div class="node-time">03 Nov, 02:15 PM • Transshipment Scan</div>
+              <div class="node-hub">Nagpur National Transshipment Hub (Maharashtra)</div>
+              <div class="node-desc">Arrived at Central sorting facility. Automated parcel sort complete.</div>
+            </div>
+            <div class="node">
+              <div class="node-time">04 Nov, 06:00 AM • Transit Corridor Scan</div>
+              <div class="node-hub">Bhopal - Gwalior National Highway Corridor (MP)</div>
+              <div class="node-desc">In transit towards Northern regional distribution hubs.</div>
+            </div>
+            <div class="node">
+              <div class="node-time">04 Nov, 08:30 PM • Gateway Terminal</div>
+              <div class="node-hub">Delhi NCR National Gateway Hub (Sonipat Border)</div>
+              <div class="node-desc">Bagged and loaded into inter-state line-haul connection for Punjab.</div>
+            </div>
+            <div class="node">
+              <div class="node-time">05 Nov, 06:15 AM • Regional Delivery Center</div>
+              <div class="node-hub">Ludhiana - Sangrur Regional Hub (Punjab)</div>
+              <div class="node-desc">Received at regional center and transferred to destination local unit.</div>
+            </div>
+            <div class="node active">
+              <div class="node-time">05 Nov, 11:45 AM • Local Delivery Facility</div>
+              <div class="node-hub">Malerkotla Delivery Station (Local Hub, Punjab)</div>
+              <div class="node-desc">Shipment arrived at destination facility. Scheduled for final delivery.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="stats-bar">
+      <div class="stat-card">
+        <h3>19,000+</h3>
+        <p>Pin Codes Served</p>
+      </div>
+      <div class="stat-card">
+        <h3>500+</h3>
+        <p>Express Hubs</p>
+      </div>
+      <div class="stat-card">
+        <h3>99.4%</h3>
+        <p>On-Time Delivery</p>
+      </div>
+    </div>
+
+    <div class="network-wrap">
+      <div class="section-title">🏢 National Key Routing Network</div>
+      <div class="section-sub">Certified regional sorting hubs powering nationwide express cargo movements:</div>
+      
+      <div class="hub-grid">
+        <div class="hub-card">
+          <div class="hub-tag">South Regional Gateway</div>
+          <div class="hub-city">Hyderabad (HYD)</div>
+          <div class="hub-desc">Shamshabad Air Cargo Terminal • Primary Southern distribution & fulfillment center.</div>
+        </div>
+        <div class="hub-card">
+          <div class="hub-tag">Central Transshipment Hub</div>
+          <div class="hub-city">Nagpur (NAG)</div>
+          <div class="hub-desc">MIHAN Multi-Modal Logistics Hub • Central cross-dock automated routing terminal.</div>
+        </div>
+        <div class="hub-card">
+          <div class="hub-tag">North Gateway Terminal</div>
+          <div class="hub-city">Delhi NCR (DEL)</div>
+          <div class="hub-desc">Sonipat Express Logistics Park • Gateway connecting Northern states and Punjab.</div>
+        </div>
+        <div class="hub-card">
+          <div class="hub-tag">Western Freight Hub</div>
+          <div class="hub-city">Mumbai (BOM)</div>
+          <div class="hub-desc">Bhiwandi Logistics Hub, Maharashtra • National freight distribution terminal.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p><b>E-Kart Express Logistics Private Limited</b></p>
+    <p>Fast, Reliable, and Secure Nationwide Domestic Express Courier Services</p>
+    <div class="footer-support">Helpdesk: 1800-419-8877 | Email: support@ekart-express.in</div>
+    <p style="margin-top: 14px; font-size: 11px; color: #64748b;">© 2026 E-Kart Express India. All Rights Reserved.</p>
+  </footer>
+
+  <script>
+    const DEFAULT_DATA = {
+      number: "872845845236",
+      status: "SHIPPED / IN TRANSIT",
+      rec: "Md Anwar",
+      addr: "Manna Fatak Road, Badi Eidgah, Badi Khara, Malerkotla, Punjab - 148023",
+      loc: "Malerkotla Delivery Station (Shipped / In Transit)"
+    };
+
+    function getStoredData() {
+      const data = localStorage.getItem('ekart_v9_clean');
+      if (data) return JSON.parse(data);
+      localStorage.setItem('ekart_v9_clean', JSON.stringify(DEFAULT_DATA));
+      return DEFAULT_DATA;
+    }
+
+    function trackOrder() {
+      const val = document.getElementById('trackInput').value.trim();
+      const d = getStoredData();
+
+      if (!val) {
+        alert("Please enter a valid 12-digit consignment number!");
+        return;
+      }
+
+      if (val === d.number) {
+        document.getElementById('lblNum').innerText = d.number;
+        document.getElementById('lblStatus').innerText = d.status;
+        document.getElementById('lblRec').innerText = d.rec;
+        document.getElementById('lblAddr').innerText = d.addr;
+        document.getElementById('lblLoc').innerText = d.loc;
+        document.getElementById('resultCard').style.display = 'block';
+        document.getElementById('resultCard').scrollIntoView({ behavior: 'smooth' });
+      } else {
+        document.getElementById('resultCard').style.display = 'none';
+        alert("Consignment number not found! Please check and try again.");
+      }
+    }
+
+    document.getElementById('trackInput').addEventListener('keypress', function (e) {
+      if (e.key === 'Enter') {
+        trackOrder();
+      }
+    });
+
+    let clickCount = 0;
+    let clickTimer = null;
+    document.getElementById('brandSecretArea').addEventListener('click', function() {
+      clickCount++;
+      if (clickCount === 1) {
+        clickTimer = setTimeout(() => { clickCount = 0; }, 1000);
+      } else if (clickCount === 3) {
+        clearTimeout(clickTimer);
+        clickCount = 0;
+        openAdmin();
+      }
+    });
+
+    function openAdmin() {
+      const pin = prompt("Enter Security PIN to access configuration:");
+      if (pin !== "1234") {
+        alert("Unauthorized access attempt!");
+        return;
+      }
+      const newStatus = prompt("Enter updated status (e.g. SHIPPED / IN TRANSIT, OUT FOR DELIVERY, DELIVERED, ON HOLD):", "SHIPPED / IN TRANSIT");
+      if (newStatus) {
+        const d = getStoredData();
+        d.status = newStatus;
+        d.loc = "Malerkotla Delivery Station (" + newStatus + ")";
+        localStorage.setItem('ekart_v9_clean', JSON.stringify(d));
+        if (document.getElementById('resultCard').style.display === 'block') {
+          document.getElementById('lblStatus').innerText = d.status;
+          document.getElementById('lblLoc').innerText = d.loc;
+        }
+        alert("Status updated successfully!");
+      }
+    }
+  </script>
+</body>
+  </html>
